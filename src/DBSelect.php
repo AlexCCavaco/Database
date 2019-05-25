@@ -6,6 +6,7 @@ use Database\lib\DBCriteria;
 use Database\lib\DBJoinChain;
 use Database\lib\DBList;
 use Database\traits\HavingTrait;
+use Database\traits\PrepRunTrait;
 use Database\traits\WhereTrait;
 
 class DBSelect implements DBQueryBase {
@@ -205,13 +206,6 @@ class DBSelect implements DBQueryBase {
         return array_merge($this->select->params(),$this->joins->params(),$this->where->params(),$this->group->params(),$this->having->params());
     }
 
-    /**
-     * Preps and Runs Query
-     * @param Database $db
-     * @return false|\PDOStatement
-     */
-    public function run(Database $db){
-        return $db->prepRun($this->query(),$this->params());
-    }
+    use PrepRunTrait;
 
 }

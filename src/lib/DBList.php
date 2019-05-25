@@ -40,12 +40,12 @@ class DBList extends DBAbstract {
 
     /**
      * Add an array of values to the list
-     * @param array $vals
+     * @param array $values
      * @return self
      */
-    public function addAll(array $vals):self {
+    public function addAll(array $values):self {
         if($this->query!=='') $this->query.= ',';
-        $this->query.= $this->formatArray($vals);
+        $this->query.= $this->formatArray($values);
         return $this;
     }
 

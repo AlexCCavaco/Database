@@ -16,9 +16,10 @@ interface DBQueryBase {
 
     /**
      * Preps and Runs Query
-     * @param Database $db
+     * @param \PDO $db
+     * @param array $driverOptions
      * @return false|\PDOStatement
      */
-    public function run(Database $db);
+    public function run(\PDO $db,$driverOptions=[]);
 
 }

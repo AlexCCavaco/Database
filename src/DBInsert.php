@@ -5,6 +5,7 @@ namespace Database;
 use Database\lib\DBFields;
 use Database\lib\DBList;
 use Database\lib\DBParamList;
+use Database\traits\PrepRunTrait;
 
 class DBInsert implements DBQueryBase {
 
@@ -88,13 +89,6 @@ class DBInsert implements DBQueryBase {
         return array_merge($this->values->params(),$this->duplicate->params());
     }
 
-    /**
-     * Preps and Runs Query
-     * @param Database $db
-     * @return false|\PDOStatement
-     */
-    public function run(Database $db){
-        return $db->prepRun($this->query(),$this->params());
-    }
+    use PrepRunTrait;
 
 }

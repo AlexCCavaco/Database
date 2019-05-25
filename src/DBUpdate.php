@@ -4,6 +4,7 @@ namespace Database;
 
 use Database\lib\DBCriteria;
 use Database\lib\DBFields;
+use Database\traits\PrepRunTrait;
 use Database\traits\WhereTrait;
 
 class DBUpdate implements DBQueryBase {
@@ -57,12 +58,11 @@ class DBUpdate implements DBQueryBase {
     }
 
     /**
-     * @param array $vals
-     * @param array|string $params
+     * @param array $values
      * @return $this
      */
-    public function setAll(array $vals,$params=[]){
-        $this->set->setAll($vals,$params);
+    public function setAll(array $values=[]){
+        $this->set->setAll($values);
         return $this;
     }
 
@@ -102,13 +102,6 @@ class DBUpdate implements DBQueryBase {
         return array_merge($this->set->params(),$this->where->params());
     }
 
-    /**
-     * Preps and Runs Query
-     * @param Database $db
-     * @return false|\PDOStatement
-     */
-    public function run(Database $db){
-        return $db->prepRun($this->query(),$this->params());
-    }
+    use PrepRunTrait;
 
 }

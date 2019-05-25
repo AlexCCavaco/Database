@@ -4,6 +4,7 @@ namespace Database;
 
 use Database\lib\DBCriteria;
 use Database\lib\DBList;
+use Database\traits\PrepRunTrait;
 use Database\traits\WhereTrait;
 
 class DBDelete implements DBQueryBase {
@@ -79,13 +80,6 @@ class DBDelete implements DBQueryBase {
         return $this->where->params();
     }
 
-    /**
-     * Preps and Runs Query
-     * @param Database $db
-     * @return false|\PDOStatement
-     */
-    public function run(Database $db){
-        return $db->prepRun($this->query(),$this->params());
-    }
+    use PrepRunTrait;
 
 }

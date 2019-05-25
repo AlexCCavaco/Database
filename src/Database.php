@@ -1,6 +1,7 @@
 <?php
 
 namespace Database;
+
 use Psr\Log\LoggerInterface;
 
 /**

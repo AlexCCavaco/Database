@@ -10,48 +10,57 @@ class DBFields extends DBAbstract {
      * Adds a x=y field and creates an instance
      * @param string $var
      * @param string $eql
-     * @param array|string $args
+     * @param array|string $params
      * @return self
      */
-    public static function val(string $var, string $eql='', array $args=[]):self {
-        return (new self())->set($var,$eql,$args);
+    public static function val(string $var, string $eql='',array $params=[]):self {
+        return (new self())->set($var,$eql,$params);
     }
 
     /**
      * Equivalent to n for multiple values at once
      * @param array $values=[]
-     * @param array|string $args
      * @return self
      */
-    public static function all(array $values=[], array $args=[]):self {
-        return (new self())->setAll($values,$args);
+    public static function all(array $values=[]):self {
+        return (new self())->setAll($values);
     }
 
     /**
      * Adds a x=y field
      * @param string $var
      * @param string $eql
-     * @param array|string $args
+     * @param array|string $params
      * @return self
      */
-    public function set(string $var,string $eql='',$args=[]):self {
+    public function set(string $var, string $eql='',$params=[]):self {
         if($this->query!=='') $this->query.= ',';
         $this->query.= "$var = $eql";
-        if(!is_array($args)&&!is_null($args)) $this->params[] = $args;
-        elseif(!empty($args)) $this->addParams($args);
+        if(!is_array($params)&&!is_null($params)) $this->params[] = $params;
+        elseif(!empty($params)) $this->addParams($params);
         return $this;
     }
 
     /**
      * Equivalent to set for multiple values at once
      * @param array $values=[]
-     * @param array|string $args
      * @return self
      */
-    public function setAll(array $values=[],$args=[]):self {
+    public function setAll(array $values=[]):self {
+        foreach($values as $var=>$eql) $this->set($var,'?',$eql);
+        return $this;
+    }
+
+    /**
+     * Equivalent to set for multiple values at once
+     * @param array $values=[]
+     * @param array|string $params
+     * @return self
+     */
+    public function setAllDirect(array $values=[], $params=[]):self {
         foreach($values as $var=> $eql) $this->set($var,$eql);
-        if(!is_array($args)&&!is_null($args)) $this->params[] = $args;
-        elseif(!empty($args)) $this->addParams($args);
+        if(!is_array($params)&&!is_null($params)) $this->params[] = $params;
+        elseif(!empty($params)) $this->addParams($params);
         return $this;
     }
 
