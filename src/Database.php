@@ -1,13 +1,13 @@
 <?php
 
-namespace App\lib\Database;
+namespace Database;
 use Psr\Log\LoggerInterface;
 
 /**
  * Class Database
  * The classes is an utility front to the normal PDO class.
  * Many functions work as a query builder.
- * @package App\lib\Database
+ * @package Database
  */
 class Database extends \PDO {
 

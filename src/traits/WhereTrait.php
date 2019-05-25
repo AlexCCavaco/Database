@@ -1,10 +1,12 @@
 <?php
 
-namespace App\lib\Database\traits;
+namespace Database\traits;
 
-use App\lib\Database\DBCriteria;
+use Database\lib\DBCriteria;
 
 /**
+ * Trait for DB Where Functions
+ * --
  * Class WhereTrait
  * @package App\lib\Database\traits
  */
@@ -16,60 +18,57 @@ trait WhereTrait {
     protected $where;
 
     /**
-     * @param string $col
+     * @param string $colOprCol
      * @param $arg
      * @return $this
      */
-    public function where(string $col,$arg=null) {
-        $this->where->and($col,$arg);
+    public function where(string $colOprCol,$arg=null){
+        $this->where->andWhere($colOprCol,$arg);
         return $this;
     }
 
     /**
-     * @param string $col
+     * @param string $colOprCol
      * @param $arg
      * @return $this
      */
-    public function andWhere(string $col,$arg=null) {
-        $this->where->and($col,$arg);
+    public function andWhere(string $colOprCol,$arg=null){
+        $this->where->andWhere($colOprCol,$arg);
         return $this;
     }
 
     /**
-     * @param string $col
+     * @param string $colOprCol
      * @param $arg
      * @return $this
      */
-    public function orWhere(string $col,$arg=null) {
-        $this->where->or($col,$arg);
+    public function orWhere(string $colOprCol,$arg=null){
+        $this->where->orWhere($colOprCol,$arg);
         return $this;
     }
 
     /**
      * @param DBCriteria $or
-     * @return $this
+     * @return DBCriteria
      */
     public function groupWhere(DBCriteria $or){
-        $this->where->andGroup($or);
-        return $this;
+        return $this->where->andGroup($or);
     }
 
     /**
      * @param DBCriteria $or
-     * @return $this
+     * @return DBCriteria
      */
     public function andGroupWhere(DBCriteria $or){
-        $this->where->andGroup($or);
-        return $this;
+        return $this->where->andGroup($or);
     }
 
     /**
      * @param DBCriteria $or
-     * @return $this
+     * @return DBCriteria
      */
     public function orGroupWhere(DBCriteria $or){
-        $this->where->orGroup($or);
-        return $this;
+        return $this->where->orGroup($or);
     }
 
 }

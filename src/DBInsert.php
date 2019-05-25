@@ -1,12 +1,12 @@
 <?php
 
-namespace App\lib\Database;
+namespace Database;
 
-/**
- * Class DBSelect
- * @package App\lib\Database
- */
-class DBInsert {
+use Database\lib\DBFields;
+use Database\lib\DBList;
+use Database\lib\DBParamList;
+
+class DBInsert implements DBQueryBase {
 
     /**
      * @var string
@@ -20,7 +20,7 @@ class DBInsert {
     /**
      * @var DBParamList
      */
-    protected $vals;
+    protected $values;
     /**
      * @var DBFields
      */
@@ -36,7 +36,7 @@ class DBInsert {
         $this->table = $table;
 
         $this->cols = new DBList();
-        $this->vals = new DBParamList();
+        $this->values = new DBParamList();
         $this->duplicate = new DBFields();
     }
 
@@ -50,35 +50,25 @@ class DBInsert {
     }
 
     /**
-     * @param array $cols
-     * @return $this
-     */
-    public function columns(array $cols){
-        $this->cols->addArray($cols);
-        return $this;
-    }
-
-    /**
-     * @param array $vals
-     * @param array $params
-     * @return $this
-     */
-    public function values(array $vals,array $params=[]){
-        $this->vals->addArray($vals,$params);
-        return $this;
-    }
-
-    /**
      * @param string $col
-     * @param string $val
-     * @param null $param
+     * @param $param
      * @param bool $onDup
      * @return $this
      */
-    public function colAndVal(string $col,string $val='?',$param=null,$onDup=false){
+    public function value($col,$param,$onDup=false){
         $this->cols->add($col);
-        $this->vals->add($val,$param);
+        $this->values->add('?',$param);
         if($onDup) $this->duplicate->set($col,'VALUES('.$col.')');
+        return $this;
+    }
+
+    /**
+     * @param array $values
+     * @param bool $onDup
+     * @return $this
+     */
+    public function values(array $values,$onDup=false){
+        foreach($values as $k=>$value) $this->value($k,$value,$onDup);
         return $this;
     }
 
@@ -86,7 +76,7 @@ class DBInsert {
      * @return string
      */
     public function query(){
-        $q = 'INSERT INTO '.$this->table.' ('.$this->cols->query().') VALUES ('.$this->vals->query().')';
+        $q = 'INSERT INTO '.$this->table.' ('.$this->cols->query().') VALUES ('.$this->values->query().')';
         if($this->duplicate->query()!=='') $q.= ' ON DUPLICATE KEY UPDATE '.$this->duplicate->query();
         return $q;
     }
@@ -95,7 +85,7 @@ class DBInsert {
      * @return array
      */
     public function params(){
-        return array_merge($this->vals->params(),$this->duplicate->params());
+        return array_merge($this->values->params(),$this->duplicate->params());
     }
 
     /**

@@ -1,12 +1,14 @@
 <?php
 
-namespace App\lib\Database;
+namespace Database;
 
-/**
- * Class DBSelect
- * @package App\lib\Database
- */
-class DBSelect {
+use Database\lib\DBCriteria;
+use Database\lib\DBJoinChain;
+use Database\lib\DBList;
+use Database\traits\HavingTrait;
+use Database\traits\WhereTrait;
+
+class DBSelect implements DBQueryBase {
 
     /**
      * @var string
@@ -22,17 +24,9 @@ class DBSelect {
      */
     protected $joins;
     /**
-     * @var DBCriteria
-     */
-    protected $where;
-    /**
      * @var DBList
      */
     protected $group;
-    /**
-     * @var DBCriteria
-     */
-    protected $having;
     /**
      * @var DBList
      */
@@ -110,7 +104,8 @@ class DBSelect {
      * @return $this
      */
     public function join($table,$alias='',DBCriteria $on,$type='LEFT'){
-        return $this->dirJoin($table,$alias,$on,$type);
+        $this->joins->join($table,$alias,$on,$type);
+        return $this;
     }
 
     /**
@@ -119,8 +114,9 @@ class DBSelect {
      * @param DBCriteria $on
      * @return $this
      */
-    public function joinLeft($table,$alias='',DBCriteria $on){
-        return $this->join($table,$alias,$on,'LEFT');
+    public function leftJoin($table,$alias='',DBCriteria $on){
+        $this->joins->leftJoin($table,$alias,$on);
+        return $this;
     }
 
     /**
@@ -129,8 +125,9 @@ class DBSelect {
      * @param DBCriteria $on
      * @return $this
      */
-    public function joinRight($table,$alias='',DBCriteria $on){
-        return $this->join($table,$alias,$on,'RIGHT');
+    public function rightJoin($table,$alias='',DBCriteria $on){
+        $this->joins->rightJoin($table,$alias,$on);
+        return $this;
     }
 
     /**
@@ -139,106 +136,25 @@ class DBSelect {
      * @param DBCriteria $on
      * @return $this
      */
-    public function joinFull($table,$alias='',DBCriteria $on){
-        return $this->join($table,$alias,$on,'FULL');
+    public function fullJoin($table,$alias='',DBCriteria $on){
+        $this->joins->fullJoin($table,$alias,$on);
+        return $this;
     }
 
     /**
-     * @param DBSelect $select
+     * @param string|DBSelect $select
      * @param string $alias
      * @param DBCriteria $on
-     * @param string $type
-     * @return $this
-     */
-    public function joinS(DBSelect $select,$alias='',DBCriteria $on,$type='LEFT'){
-        return $this->dirJoin('('.$select->query().')',$alias,$on,$type,$select->params());
-    }
-
-    /**
-     * @param DBSelect $select
-     * @param string $alias
-     * @param DBCriteria $on
-     * @return $this
-     */
-    public function joinSLeft(DBSelect $select,$alias='',DBCriteria $on){
-        return $this->joinS($select,$alias,$on,'LEFT');
-    }
-
-    /**
-     * @param DBSelect $select
-     * @param string $alias
-     * @param DBCriteria $on
-     * @return $this
-     */
-    public function joinSRight(DBSelect $select,$alias='',DBCriteria $on){
-        return $this->joinS($select,$alias,$on,'RIGHT');
-    }
-
-    /**
-     * @param DBSelect $select
-     * @param string $alias
-     * @param DBCriteria $on
-     * @return $this
-     */
-    public function joinSFull(DBSelect $select,$alias='',DBCriteria $on){
-        return $this->joinS($select,$alias,$on,'FULL');
-    }
-
-    /**
-     * @param string $table
-     * @param string $alias
-     * @param DBCriteria $on
-     * @param string $type
      * @param array $params
+     * @param string $type
      * @return $this
      */
-    protected function dirJoin($table,$alias='',DBCriteria $on,$type='LEFT',array $params=[]){
-        $this->joins->join($table,$alias,$on,$params,$type);
+    public function joinSelect($select,$alias='',DBCriteria $on,array $params=[],string $type=''){
+        $this->joins->selectJoin($select,$alias,$on,$params,$type);
         return $this;
     }
 
-    /**
-     * @param string $col
-     * @param string $opr
-     * @param string $val
-     * @param string|null $arg1
-     * @param string|null $arg2
-     * @return $this
-     */
-    public function where($col,$opr,$val='?',$arg1=null,$arg2=null){
-        $this->where->and($col,$opr,$val,$arg1,$arg2);
-        return $this;
-    }
-
-    /**
-     * @param string $col
-     * @param string $opr
-     * @param string $val
-     * @param string|null $arg1
-     * @param string|null $arg2
-     * @return $this
-     */
-    public function or($col,$opr,$val='?',$arg1=null,$arg2=null){
-        $this->where->or($col,$opr,$val,$arg1,$arg2);
-        return $this;
-    }
-
-    /**
-     * @param DBCriteria $and
-     * @return $this
-     */
-    public function andWhere(DBCriteria $and){
-        $this->where->andX($and); return $this;
-    }
-
-    /**
-     * @param DBCriteria $or
-     * @return $this
-     */
-    public function orWhere(DBCriteria $or){
-        $this->where->orX($or); return $this;
-    }
-
+    use WhereTrait;
 
     /**
      * @param array|string $var
@@ -246,48 +162,19 @@ class DBSelect {
      */
     public function orderBy($var){
         if(is_string($var)) $this->order->add($var);
-        else $this->order->addArray($var);
+        else $this->order->addAll($var);
         return $this;
     }
 
-    /**
-     * @param string $col
-     * @param string $opr
-     * @param string $val
-     * @param string|null $arg1
-     * @param string|null $arg2
-     * @return $this
-     */
-    public function having($col,$opr,$val='?',$arg1=null,$arg2=null){
-        $this->having->and($col,$opr,$val,$arg1,$arg2);
-        return $this;
-    }
-
-    /**
-     * @param DBCriteria $and
-     * @return $this
-     */
-    public function andHaving(DBCriteria $and){
-        $this->having->andX($and);
-        return $this;
-    }
-
-    /**
-     * @param DBCriteria $or
-     * @return $this
-     */
-    public function orHaving(DBCriteria $or){
-        $this->having->orX($or);
-        return $this;
-    }
+    use HavingTrait;
 
     /**
      * @param array|string $var
      * @return $this
      */
-    public function groupBy(array $var){
+    public function groupBy($var){
         if(is_string($var)) $this->group->add($var);
-        $this->group->addArray($var);
+        $this->group->addAll($var);
         return $this;
     }
 

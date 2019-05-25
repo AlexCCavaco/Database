@@ -1,12 +1,12 @@
 <?php
 
-namespace App\lib\Database;
+namespace Database;
 
-/**
- * Class DBSelect
- * @package App\lib\Database
- */
-class DBUpdate {
+use Database\lib\DBCriteria;
+use Database\lib\DBFields;
+use Database\traits\WhereTrait;
+
+class DBUpdate implements DBQueryBase {
 
     /**
      * @var string
@@ -17,10 +17,6 @@ class DBUpdate {
      * @var DBFields
      */
     protected $set;
-    /**
-     * @var DBCriteria
-     */
-    protected $where;
     /**
      * @var string
      */
@@ -66,7 +62,7 @@ class DBUpdate {
      * @return $this
      */
     public function setAll(array $vals,$params=[]){
-        $this->set->setX($vals,$params);
+        $this->set->setAll($vals,$params);
         return $this;
     }
 
@@ -79,18 +75,7 @@ class DBUpdate {
         return $this;
     }
 
-    /**
-     * @param string $col
-     * @param string $opr
-     * @param string $val
-     * @param string|null $arg1
-     * @param string|null $arg2
-     * @return $this
-     */
-    public function where($col,$opr,$val='?',$arg1=null,$arg2=null){
-        $this->where->and($col,$opr,$val,$arg1,$arg2);
-        return $this;
-    }
+    use WhereTrait;
 
     /**
      * @param string $returning

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\lib\Database;
-use App\lib\Database\traits\WhereTrait;
+namespace Database;
 
-/**
- * Class DBSelect
- * @package App\lib\Database
- */
-class DBDelete {
+use Database\lib\DBCriteria;
+use Database\lib\DBList;
+use Database\traits\WhereTrait;
+
+class DBDelete implements DBQueryBase {
 
     /**
      * @var string
@@ -53,7 +52,7 @@ class DBDelete {
      */
     public function orderBy(array $var){
         if(is_string($var)) $this->order->add($var);
-        $this->order->addArray($var);
+        $this->order->addAll($var);
         return $this;
     }
 
