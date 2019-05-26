@@ -51,7 +51,7 @@ class DBDelete implements DBQueryBase {
      * @param array|string $var
      * @return $this
      */
-    public function orderBy(array $var){
+    public function orderBy($var){
         if(is_string($var)) $this->order->add($var);
         $this->order->addAll($var);
         return $this;
