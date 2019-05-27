@@ -10,11 +10,6 @@ namespace DB\traits;
 trait LimitTrait {
 
     /**
-     * @var string|int
-     */
-    protected $limit;
-
-    /**
      * @param string|int $limit
      * @return $this
      */

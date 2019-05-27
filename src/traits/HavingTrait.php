@@ -13,11 +13,6 @@ use DB\lib\DBCriteria;
 trait HavingTrait {
 
     /**
-     * @var DBCriteria
-     */
-    protected $having;
-
-    /**
      * @param string $col
      * @param $arg
      * @return $this

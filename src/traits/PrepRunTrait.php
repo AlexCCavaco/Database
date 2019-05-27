@@ -12,11 +12,6 @@ use DB\Database;
 trait PrepRunTrait {
 
     /**
-     * @var \PDO|null
-     */
-    protected $db;
-
-    /**
      * Preps and Runs Query
      * @param \PDO|null $db
      * @param array $driverOptions

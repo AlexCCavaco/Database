@@ -13,11 +13,6 @@ use DB\lib\DBCriteria;
 trait WhereTrait {
 
     /**
-     * @var DBCriteria
-     */
-    protected $where;
-
-    /**
      * @param string $colOprCol
      * @param $arg
      * @return $this
