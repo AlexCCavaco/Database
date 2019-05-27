@@ -104,7 +104,7 @@ class DBSelect implements DBQueryBase {
      * @param string $type
      * @return $this
      */
-    public function join($table,$alias='',DBCriteria $on,$type='LEFT'){
+    public function join($table,$alias='',DBCriteria $on,$type=''){
         $this->joins->join($table,$alias,$on,$type);
         return $this;
     }
