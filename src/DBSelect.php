@@ -100,57 +100,61 @@ class DBSelect implements DBQueryBase {
     /**
      * @param string $table
      * @param string $alias
-     * @param DBCriteria $on
+     * @param DBCriteria|string|null $on
+     * @param array|mixed|null $params
      * @param string $type
      * @return $this
      */
-    public function join($table,$alias='',DBCriteria $on,$type=''){
-        $this->joins->join($table,$alias,$on,$type);
+    public function join($table,$alias='',$on=null,$params=null,$type=''){
+        $this->joins->join($table,$alias,$on,$params,$type);
         return $this;
     }
 
     /**
      * @param string $table
      * @param string $alias
-     * @param DBCriteria $on
+     * @param DBCriteria|string|null $on
+     * @param array|mixed|null $params
      * @return $this
      */
-    public function leftJoin($table,$alias='',DBCriteria $on){
-        $this->joins->leftJoin($table,$alias,$on);
+    public function leftJoin($table,$alias='',$on=null,$params=null){
+        $this->joins->leftJoin($table,$alias,$on,$params);
         return $this;
     }
 
     /**
      * @param string $table
      * @param string $alias
-     * @param DBCriteria $on
+     * @param DBCriteria|string|null $on
+     * @param array|mixed|null $params
      * @return $this
      */
-    public function rightJoin($table,$alias='',DBCriteria $on){
-        $this->joins->rightJoin($table,$alias,$on);
+    public function rightJoin($table,$alias='',$on=null,$params=null){
+        $this->joins->rightJoin($table,$alias,$on,$params);
         return $this;
     }
 
     /**
      * @param string $table
      * @param string $alias
-     * @param DBCriteria $on
+     * @param DBCriteria|string|null $on
+     * @param array|mixed|null $params
      * @return $this
      */
-    public function fullJoin($table,$alias='',DBCriteria $on){
-        $this->joins->fullJoin($table,$alias,$on);
+    public function fullJoin($table,$alias='',$on=null,$params=null){
+        $this->joins->fullJoin($table,$alias,$on,$params);
         return $this;
     }
 
     /**
      * @param string|DBSelect $select
      * @param string $alias
-     * @param DBCriteria $on
-     * @param array $params
+     * @param DBCriteria|string|null $on
+     * @param array|mixed|null $params
      * @param string $type
      * @return $this
      */
-    public function joinSelect($select,$alias='',DBCriteria $on,array $params=[],string $type=''){
+    public function joinSelect($select,$alias,$on,array $params=[],string $type=''){
         $this->joins->selectJoin($select,$alias,$on,$params,$type);
         return $this;
     }
