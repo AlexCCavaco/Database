@@ -75,8 +75,9 @@ class DBJoinChain extends DBAbstract {
             if(is_a($on,DBCriteria::class)) $this->query.= $on->query();
             else $this->query.= $on;
         } else $this->query.= '1';
-        $args = $on->params();
-        if(!is_null($on)){
+        $args = [];
+        if(is_a($on,DBCriteria::class)){ $args = $on->params(); }
+        if(!is_null($params)){
             if(is_array($params)) $args = array_merge($params,$args);
             else $args[] = $params;
         }

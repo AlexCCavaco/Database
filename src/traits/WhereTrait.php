@@ -13,6 +13,11 @@ use DB\lib\DBCriteria;
 trait WhereTrait {
 
     /**
+     * @var DBCriteria
+     */
+    protected $where;
+
+    /**
      * @param string $colOprCol
      * @param $arg
      * @return $this
@@ -44,26 +49,29 @@ trait WhereTrait {
 
     /**
      * @param DBCriteria $or
-     * @return DBCriteria
+     * @return $this
      */
     public function groupWhere(DBCriteria $or){
-        return $this->where->andGroup($or);
+        $this->where->andGroup($or);
+        return $this;
     }
 
     /**
      * @param DBCriteria $or
-     * @return DBCriteria
+     * @return $this
      */
     public function andGroupWhere(DBCriteria $or){
-        return $this->where->andGroup($or);
+        $this->where->andGroup($or);
+        return $this;
     }
 
     /**
      * @param DBCriteria $or
-     * @return DBCriteria
+     * @return $this
      */
     public function orGroupWhere(DBCriteria $or){
-        return $this->where->orGroup($or);
+        $this->where->orGroup($or);
+        return $this;
     }
 
 }

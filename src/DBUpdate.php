@@ -19,10 +19,6 @@ class DBUpdate implements DBQueryBase {
      */
     protected $set;
     /**
-     * @var DBCriteria
-     */
-    protected $where;
-    /**
      * @var string
      */
     protected $returning;

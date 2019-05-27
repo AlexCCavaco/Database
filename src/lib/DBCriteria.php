@@ -33,7 +33,7 @@ class DBCriteria extends DBAbstract {
      * @return DBCriteria
      */
     public function andWhere(string $colOprCol,$param=null):DBCriteria {
-        if($this->query!='') $this->query.= " AND $colOprCol ";
+        $this->query.= ($this->query!==''?' AND':'')." $colOprCol ";
         if($param!==null) $this->addParam($param);
         return $this;
     }
@@ -45,7 +45,7 @@ class DBCriteria extends DBAbstract {
      * @return DBCriteria
      */
     public function orWhere(string $colOprCol='?',$param=null):DBCriteria {
-        if($this->query!='') $this->query.= " OR $colOprCol ";
+        $this->query.= ($this->query!==''?' OR':'')." $colOprCol ";
         if($param!==null) $this->addParam($param);
         return $this;
     }
@@ -57,7 +57,7 @@ class DBCriteria extends DBAbstract {
      * @return DBCriteriaOpr
      */
     public function and(string $col,$param=null):DBCriteriaOpr {
-        if($this->query!='') $this->query.= " AND $col ";
+        $this->query.= ($this->query!==''?' AND':'')." $col ";
         if($param!==null) $this->addParam($param);
         return new DBCriteriaOpr($this);
     }
@@ -69,7 +69,7 @@ class DBCriteria extends DBAbstract {
      * @return DBCriteriaOpr
      */
     public function or(string $col='?',$param=null):DBCriteriaOpr {
-        if($this->query!='') $this->query.= " OR $col ";
+        $this->query.= ($this->query!==''?' OR':'')." $col ";
         if($param!==null) $this->addParam($param);
         return new DBCriteriaOpr($this);
     }
@@ -80,8 +80,7 @@ class DBCriteria extends DBAbstract {
      * @return DBCriteria
      */
     public function andGroup(DBCriteria $criteria):DBCriteria {
-        if($this->query!='') $this->query.= ' AND ';
-        $this->query.= '('.$criteria->query().')';
+        $this->query.= ($this->query!==''?' AND':'').' ('.$criteria->query().')';
         $this->addParams($criteria->params());
         return $this;
     }
@@ -92,8 +91,7 @@ class DBCriteria extends DBAbstract {
      * @return DBCriteria
      */
     public function orGroup(DBCriteria $criteria):DBCriteria {
-        if($this->query!='') $this->query.= ' OR ';
-        $this->query.= '('.$criteria->query().')';
+        $this->query.= ($this->query!==''?' OR':'').' ('.$criteria->query().')';
         $this->addParams($criteria->params());
         return $this;
     }

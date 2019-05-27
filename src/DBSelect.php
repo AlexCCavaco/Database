@@ -27,25 +27,9 @@ class DBSelect implements DBQueryBase {
      */
     protected $joins;
     /**
-     * @var DBCriteria
-     */
-    protected $where;
-    /**
      * @var DBList
      */
     protected $group;
-    /**
-     * @var DBList
-     */
-    protected $having;
-    /**
-     * @var DBList
-     */
-    protected $order;
-    /**
-     * @var string|int
-     */
-    protected $limit;
 
     /**
      * DBSelect constructor.

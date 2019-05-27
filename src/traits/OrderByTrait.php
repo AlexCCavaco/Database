@@ -12,6 +12,11 @@ use DB\lib\DBList;
 trait OrderByTrait {
 
     /**
+     * @var DBList
+     */
+    protected $order;
+
+    /**
      * @param array|string ...$vars
      * @return $this
      */
