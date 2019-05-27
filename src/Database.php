@@ -53,7 +53,7 @@ class Database extends \PDO {
      * @return \PDOStatement|false
      */
     public function prepRun($statement,array $params=null,array $driverOptions=[]){
-        if($this->logger!==null) ($this->logger->{$this->logType})($statement,$params);
+        if($this->logger!==null) $this->logger->{$this->logType}($statement,$params);
         $q = $this->prepare($statement,$driverOptions);
         if($q===false||$q->execute($params)===false) return false;
         return $q;
