@@ -17,6 +17,19 @@ class DBDelete implements DBQueryBase {
     protected $table;
 
     /**
+     * @var DBCriteria
+     */
+    protected $where;
+    /**
+     * @var DBList
+     */
+    protected $order;
+    /**
+     * @var string|int
+     */
+    protected $limit;
+
+    /**
      * @param string $table
      * @param string $alias
      */
