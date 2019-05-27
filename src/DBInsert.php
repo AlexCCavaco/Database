@@ -1,11 +1,11 @@
 <?php
 
-namespace Database;
+namespace DB;
 
-use Database\lib\DBFields;
-use Database\lib\DBList;
-use Database\lib\DBParamList;
-use Database\traits\PrepRunTrait;
+use DB\lib\DBFields;
+use DB\lib\DBList;
+use DB\lib\DBParamList;
+use DB\traits\PrepRunTrait;
 
 class DBInsert implements DBQueryBase {
 

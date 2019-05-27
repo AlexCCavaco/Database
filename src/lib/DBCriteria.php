@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\lib;
+namespace DB\lib;
 
 class DBCriteria extends DBAbstract {
 

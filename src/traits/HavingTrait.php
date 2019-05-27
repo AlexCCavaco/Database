@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\traits;
+namespace DB\traits;
 
-use Database\lib\DBCriteria;
+use DB\lib\DBCriteria;
 
 /**
  * Trait for DB Where Functions

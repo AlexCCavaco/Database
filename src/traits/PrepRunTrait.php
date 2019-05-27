@@ -1,7 +1,7 @@
 <?php
 
-namespace Database\traits;
-use Database\Database;
+namespace DB\traits;
+use DB\Database;
 
 /**
  * Trait for DB Run Function

@@ -1,7 +1,7 @@
 <?php
-namespace Database\traits;
+namespace DB\traits;
 
-use Database\lib\DBList;
+use DB\lib\DBList;
 
 /**
  * Trait for DB Where Functions

@@ -1,15 +1,15 @@
 <?php
 
-namespace Database;
+namespace DB;
 
-use Database\lib\DBCriteria;
-use Database\lib\DBJoinChain;
-use Database\lib\DBList;
-use Database\traits\HavingTrait;
-use Database\traits\LimitTrait;
-use Database\traits\OrderByTrait;
-use Database\traits\PrepRunTrait;
-use Database\traits\WhereTrait;
+use DB\lib\DBCriteria;
+use DB\lib\DBJoinChain;
+use DB\lib\DBList;
+use DB\traits\HavingTrait;
+use DB\traits\LimitTrait;
+use DB\traits\OrderByTrait;
+use DB\traits\PrepRunTrait;
+use DB\traits\WhereTrait;
 
 class DBSelect implements DBQueryBase {
 

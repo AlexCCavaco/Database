@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\lib;
+namespace DB\lib;
 
 /**
  * Auxiliary Class to Aid

@@ -1,11 +1,11 @@
 <?php
 
-namespace Database;
+namespace DB;
 
-use Database\lib\DBCriteria;
-use Database\lib\DBFields;
-use Database\traits\PrepRunTrait;
-use Database\traits\WhereTrait;
+use DB\lib\DBCriteria;
+use DB\lib\DBFields;
+use DB\traits\PrepRunTrait;
+use DB\traits\WhereTrait;
 
 class DBUpdate implements DBQueryBase {
 

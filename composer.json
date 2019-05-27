@@ -1,7 +1,7 @@
 {
     "name": "alexccavaco/database",
     "description": "MySQL Database Query Builder for PHP",
-    "type": "library",
+    "keywords": ["mysql", "database", "query builder"],
     "license": "MIT",
     "authors": [
         {
@@ -15,8 +15,8 @@
         "psr/log": ">=1.1.0"
     },
     "autoload": {
-        "psr-0": {
-            "Database\\": "src/"
+        "psr-4": {
+            "DB\\": "src/"
         }
     }
 }

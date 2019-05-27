@@ -1,5 +1,5 @@
 <?php
-namespace Database\traits;
+namespace DB\traits;
 
 /**
  * Trait for DB Where Functions

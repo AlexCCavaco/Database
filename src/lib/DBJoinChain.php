@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\lib;
+namespace DB\lib;
 
-use Database\DBSelect;
+use DB\DBSelect;
 
 class DBJoinChain extends DBAbstract {
 
