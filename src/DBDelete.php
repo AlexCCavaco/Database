@@ -4,6 +4,8 @@ namespace Database;
 
 use Database\lib\DBCriteria;
 use Database\lib\DBList;
+use Database\traits\LimitTrait;
+use Database\traits\OrderByTrait;
 use Database\traits\PrepRunTrait;
 use Database\traits\WhereTrait;
 
@@ -13,15 +15,6 @@ class DBDelete implements DBQueryBase {
      * @var string
      */
     protected $table;
-
-    /**
-     * @var DBList
-     */
-    protected $order;
-    /**
-     * @var string|int
-     */
-    protected $limit;
 
     /**
      * @param string $table
@@ -47,21 +40,9 @@ class DBDelete implements DBQueryBase {
 
     use WhereTrait;
 
-    /**
-     * @param array|string $var
-     * @return $this
-     */
-    public function orderBy($var){
-        if(is_string($var)) $this->order->add($var);
-        $this->order->addAll($var);
-        return $this;
-    }
+    use OrderByTrait;
 
-    /**
-     * @param string|int $limit
-     * @return $this
-     */
-    public function limit($limit){ $this->limit = $limit; return $this; }
+    use LimitTrait;
 
     /**
      * @return string

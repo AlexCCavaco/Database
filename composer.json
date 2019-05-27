@@ -1,6 +1,6 @@
 {
     "name": "alexccavaco/database",
-    "description": "Database Query Builder for PHP",
+    "description": "MySQL Database Query Builder for PHP",
     "type": "library",
     "license": "MIT",
     "authors": [

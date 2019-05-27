@@ -49,20 +49,23 @@ class DBUpdate implements DBQueryBase {
     /**
      * @param string $column
      * @param string $equal
-     * @param array|string $param
+     * @param array|mixed $param
      * @return $this
      */
-    public function set(string $column,string $equal='?',$param=[]){
+    public function set(string $column,string $equal='?',$param=null){
         $this->set->set($column,$equal,$param);
         return $this;
     }
 
     /**
-     * @param array $values
+     * @param array|string $values
      * @return $this
      */
-    public function setAll(array $values=[]){
-        $this->set->setAll($values);
+    public function setAll(...$values){
+        foreach($values as $val){
+            if(is_array($val)) $this->set->setAll($val);
+            else $this->set->set($val);
+        }
         return $this;
     }
 

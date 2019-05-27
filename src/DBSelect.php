@@ -6,6 +6,8 @@ use Database\lib\DBCriteria;
 use Database\lib\DBJoinChain;
 use Database\lib\DBList;
 use Database\traits\HavingTrait;
+use Database\traits\LimitTrait;
+use Database\traits\OrderByTrait;
 use Database\traits\PrepRunTrait;
 use Database\traits\WhereTrait;
 
@@ -65,6 +67,17 @@ class DBSelect implements DBQueryBase {
     }
 
     /**
+     * Automatically Sets Select all Where id is equal $id
+     * @param string|int $id
+     * @return static
+     */
+    public function find($id){
+        $this->select('*');
+        $this->where('id = ?',$id);
+        return $this;
+    }
+
+    /**
      * @param string $column
      * @param string $alias
      * @param array $params
@@ -78,12 +91,24 @@ class DBSelect implements DBQueryBase {
     }
 
     /**
+     * @param string|array ...$columns
+     * @return $this
+     */
+    public function selectAll(...$columns){
+        foreach($columns as $col){
+            if(is_array($col)) foreach($col as $val) $this->select($val);
+            else $this->select($col);
+        }
+        return $this;
+    }
+
+    /**
      * @param array $columns
      * @param string $table_alias
      * @param string $prefix_alias
      * @return $this
      */
-    public function selectAll($columns,$table_alias='',$prefix_alias=''){
+    public function selectAllAliased($columns,$table_alias='',$prefix_alias=''){
         if($table_alias!=='') $table_alias.='.';
         foreach($columns as $sec1=>$sec2){
             if(is_string($sec1)){
@@ -161,33 +186,23 @@ class DBSelect implements DBQueryBase {
 
     use WhereTrait;
 
-    /**
-     * @param array|string $var
-     * @return $this
-     */
-    public function orderBy($var){
-        if(is_string($var)) $this->order->add($var);
-        else $this->order->addAll($var);
-        return $this;
-    }
+    use OrderByTrait;
 
     use HavingTrait;
 
     /**
-     * @param array|string $var
+     * @param array|string ...$vars
      * @return $this
      */
-    public function groupBy($var){
-        if(is_string($var)) $this->group->add($var);
-        $this->group->addAll($var);
+    public function groupBy(...$vars){
+        foreach($vars as $var){
+            if(is_array($var)) $this->group->addAll($var);
+            else $this->group->add($var);
+        }
         return $this;
     }
 
-    /**
-     * @param string|int $limit
-     * @return $this
-     */
-    public function limit($limit){ $this->limit = $limit; return $this; }
+    use LimitTrait;
 
     /**
      * @return string

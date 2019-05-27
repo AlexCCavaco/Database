@@ -74,6 +74,15 @@ class DBInsert implements DBQueryBase {
     }
 
     /**
+     * @param array $data
+     * @return $this
+     */
+    public function onDupKey(array $data){
+        $this->duplicate->setAll($data);
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function query(){
