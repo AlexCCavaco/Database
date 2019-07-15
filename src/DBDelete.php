@@ -49,7 +49,7 @@ class DBDelete implements DBQueryBase {
      */
     public function query(){
         $q = 'DELETE FROM '.$this->table.' WHERE '.$this->where->query();
-        if($this->order!=='') $q.= ' ORDER BY '.$this->order->query();
+        if($this->order->query()!=='') $q.= ' ORDER BY '.$this->order->query();
         if($this->limit!=='') $q.= ' LIMIT '.$this->limit;
         return $q;
     }
