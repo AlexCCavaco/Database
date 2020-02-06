@@ -19,6 +19,10 @@ class DBSelect implements DBQueryBase {
     protected $table;
 
     /**
+     * @var array
+     */
+    protected $inherited;
+    /**
      * @var DBList
      */
     protected $select;
@@ -35,11 +39,13 @@ class DBSelect implements DBQueryBase {
      * DBSelect constructor.
      * @param string $table
      * @param string $alias
+     * @param array $params
      */
-    public function __construct($table,$alias=''){
+    public function __construct($table,$alias='',$params=[]){
         if($alias!=='') $table.= ' AS '.$alias;
         $this->table = $table;
 
+        $this->inherited = $params;
         $this->select = new DBList();
         $this->joins = new DBJoinChain();
         $this->where = new DBCriteria();
@@ -56,6 +62,17 @@ class DBSelect implements DBQueryBase {
      */
     public static function from($table,$alias=''){
         return new static($table,$alias);
+    }
+
+    /**
+     * Select Query From Another Select
+     * @param DBSelect $select
+     * @return static
+     */
+    public static function fromSelect(DBSelect $select){
+        $new = new static("(".$select->query().")");
+        $new->inherited = $select->params();
+        return $new;
     }
 
     /**
@@ -214,7 +231,7 @@ class DBSelect implements DBQueryBase {
      * @return array
      */
     public function params(){
-        return array_merge($this->select->params(),$this->joins->params(),$this->where->params(),$this->group->params(),$this->having->params());
+        return array_merge($this->inherited,$this->select->params(),$this->joins->params(),$this->where->params(),$this->group->params(),$this->having->params());
     }
 
     use PrepRunTrait;
