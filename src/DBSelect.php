@@ -67,10 +67,11 @@ class DBSelect implements DBQueryBase {
     /**
      * Select Query From Another Select
      * @param DBSelect $select
+     * @param string $alias
      * @return static
      */
-    public static function fromSelect(DBSelect $select){
-        $new = new static("(".$select->query().")");
+    public static function fromSelect(DBSelect $select,$alias=''){
+        $new = new static("(".$select->query().")",$alias);
         $new->inherited = $select->params();
         return $new;
     }
