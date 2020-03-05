@@ -6,8 +6,8 @@ use DB\Database;
 /**
  * Trait for DB Run Function
  * --
- * Class WhereTrait
- * @package App\lib\Database\traits
+ * Class PrepRunTrait
+ * @package DB\traits
  */
 trait PrepRunTrait {
 

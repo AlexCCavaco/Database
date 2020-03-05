@@ -6,6 +6,7 @@ use DB\lib\DBCriteria;
 use DB\lib\DBJoinChain;
 use DB\lib\DBList;
 use DB\traits\HavingTrait;
+use DB\traits\JoinTrait;
 use DB\traits\LimitTrait;
 use DB\traits\OrderByTrait;
 use DB\traits\PrepRunTrait;
@@ -26,10 +27,6 @@ class DBSelect implements DBQueryBase {
      * @var DBList
      */
     protected $select;
-    /**
-     * @var DBJoinChain
-     */
-    protected $joins;
     /**
      * @var DBList
      */
@@ -132,67 +129,7 @@ class DBSelect implements DBQueryBase {
         return $this;
     }
 
-    /**
-     * @param string $table
-     * @param string $alias
-     * @param DBCriteria|string|null $on
-     * @param array|mixed|null $params
-     * @param string $type
-     * @return $this
-     */
-    public function join($table,$alias='',$on=null,$params=null,$type=''){
-        $this->joins->join($table,$alias,$on,$params,$type);
-        return $this;
-    }
-
-    /**
-     * @param string $table
-     * @param string $alias
-     * @param DBCriteria|string|null $on
-     * @param array|mixed|null $params
-     * @return $this
-     */
-    public function leftJoin($table,$alias='',$on=null,$params=null){
-        $this->joins->leftJoin($table,$alias,$on,$params);
-        return $this;
-    }
-
-    /**
-     * @param string $table
-     * @param string $alias
-     * @param DBCriteria|string|null $on
-     * @param array|mixed|null $params
-     * @return $this
-     */
-    public function rightJoin($table,$alias='',$on=null,$params=null){
-        $this->joins->rightJoin($table,$alias,$on,$params);
-        return $this;
-    }
-
-    /**
-     * @param string $table
-     * @param string $alias
-     * @param DBCriteria|string|null $on
-     * @param array|mixed|null $params
-     * @return $this
-     */
-    public function fullJoin($table,$alias='',$on=null,$params=null){
-        $this->joins->fullJoin($table,$alias,$on,$params);
-        return $this;
-    }
-
-    /**
-     * @param string|DBSelect $select
-     * @param string $alias
-     * @param DBCriteria|string|null $on
-     * @param array|mixed|null $params
-     * @param string $type
-     * @return $this
-     */
-    public function joinSelect($select,$alias,$on,array $params=[],string $type=''){
-        $this->joins->selectJoin($select,$alias,$on,$params,$type);
-        return $this;
-    }
+    use JoinTrait;
 
     use WhereTrait;
 

@@ -7,7 +7,7 @@ use DB\lib\DBList;
  * Trait for DB Where Functions
  * --
  * Class OrderByTrait
- * @package Database\traits
+ * @package DB\traits
  */
 trait OrderByTrait {
 

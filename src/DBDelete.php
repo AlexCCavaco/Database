@@ -8,6 +8,7 @@ use DB\traits\LimitTrait;
 use DB\traits\OrderByTrait;
 use DB\traits\PrepRunTrait;
 use DB\traits\WhereTrait;
+use DB\traits\JoinTrait;
 
 class DBDelete implements DBQueryBase {
 
@@ -15,6 +16,16 @@ class DBDelete implements DBQueryBase {
      * @var string
      */
     protected $table;
+
+    /**
+     * @var DBList
+     */
+    protected $delete;
+
+    /**
+     * @var bool
+     */
+    protected $joined;
 
     /**
      * @param string $table
@@ -26,6 +37,8 @@ class DBDelete implements DBQueryBase {
 
         $this->where = new DBCriteria();
         $this->order = new DBList();
+        $this->delete = new DBList();
+        $this->joined = false;
         $this->limit = '';
     }
 
@@ -38,9 +51,20 @@ class DBDelete implements DBQueryBase {
         return new static($table,$alias);
     }
 
+    /**
+     * @param string $table_or_alias
+     * @return self
+     */
+    public function delete($table_or_alias){
+        $this->delete->add($table_or_alias);
+        return $this;
+    }
+
     use WhereTrait;
 
     use OrderByTrait;
+
+    use JoinTrait;
 
     use LimitTrait;
 
@@ -48,7 +72,9 @@ class DBDelete implements DBQueryBase {
      * @return string
      */
     public function query(){
-        $q = 'DELETE FROM '.$this->table.' WHERE '.$this->where->query();
+        $q = 'DELETE '.$this->delete->query().' FROM '.$this->table;
+        if($this->joins->query()!=='') $q.= ' '.$this->joins->query();
+        $q.= ' WHERE '.$this->where->query();
         if($this->order->query()!=='') $q.= ' ORDER BY '.$this->order->query();
         if($this->limit!=='') $q.= ' LIMIT '.$this->limit;
         return $q;
@@ -58,7 +84,7 @@ class DBDelete implements DBQueryBase {
      * @return array
      */
     public function params(){
-        return $this->where->params();
+        return array_merge($this->joins->params(),$this->where->params());
     }
 
     use PrepRunTrait;

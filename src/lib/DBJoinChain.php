@@ -61,6 +61,18 @@ class DBJoinChain extends DBAbstract {
     }
 
     /**
+     * Adds one Full Join Element
+     * @param string $table
+     * @param string $alias
+     * @param DBCriteria|string|null $on
+     * @param array|mixed|null $params
+     * @return self
+     */
+    public function innerJoin(string $table,$alias='',$on=null,$params=null):self {
+        return $this->join($table,$alias,$on,$params,'INNER');
+    }
+
+    /**
      * Adds one Join Element
      * @param string $table
      * @param string $alias

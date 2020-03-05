@@ -8,7 +8,7 @@ use DB\lib\DBCriteria;
  * Trait for DB Where Functions
  * --
  * Class WhereTrait
- * @package App\lib\Database\traits
+ * @package DB\traits
  */
 trait WhereTrait {
 

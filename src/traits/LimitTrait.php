@@ -4,8 +4,8 @@ namespace DB\traits;
 /**
  * Trait for DB Where Functions
  * --
- * Class WhereTrait
- * @package Database\traits
+ * Class LimitTrait
+ * @package DB\traits
  */
 trait LimitTrait {
 
