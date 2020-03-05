@@ -23,11 +23,6 @@ class DBDelete implements DBQueryBase {
     protected $delete;
 
     /**
-     * @var bool
-     */
-    protected $joined;
-
-    /**
      * @param string $table
      * @param string $alias
      */

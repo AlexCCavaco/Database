@@ -4,6 +4,7 @@ namespace DB;
 
 use DB\lib\DBCriteria;
 use DB\lib\DBFields;
+use DB\traits\JoinTrait;
 use DB\traits\PrepRunTrait;
 use DB\traits\WhereTrait;
 
@@ -80,6 +81,8 @@ class DBUpdate implements DBQueryBase {
 
     use WhereTrait;
 
+    use JoinTrait;
+
     /**
      * @param string $returning
      * @return $this
@@ -93,7 +96,9 @@ class DBUpdate implements DBQueryBase {
      * @return string
      */
     public function query(){
-        $q = 'UPDATE '.$this->table.' SET '.$this->set->query().' WHERE '.$this->where->query();
+        $q = 'UPDATE '.$this->table;
+        if($this->joins->query()!=='') $q.= ' '.$this->joins->query();
+        $q.= ' SET '.$this->set->query().' WHERE '.$this->where->query();
         if($this->returning!=='') $q.= ' RETURNING '.$this->returning;
         return $q;
     }
@@ -102,7 +107,7 @@ class DBUpdate implements DBQueryBase {
      * @return array
      */
     public function params(){
-        return array_merge($this->set->params(),$this->where->params());
+        return array_merge($this->joins->params(),$this->set->params(),$this->where->params());
     }
 
     use PrepRunTrait;
