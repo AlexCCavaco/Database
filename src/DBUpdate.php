@@ -4,6 +4,7 @@ namespace DB;
 
 use DB\lib\DBCriteria;
 use DB\lib\DBFields;
+use DB\lib\DBJoinChain;
 use DB\traits\JoinTrait;
 use DB\traits\PrepRunTrait;
 use DB\traits\WhereTrait;
@@ -35,6 +36,7 @@ class DBUpdate implements DBQueryBase {
 
         $this->set = new DBFields();
         $this->where = new DBCriteria();
+        $this->joins = new DBJoinChain();
         $this->returning = '';
     }
 

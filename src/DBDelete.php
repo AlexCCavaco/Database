@@ -3,6 +3,7 @@
 namespace DB;
 
 use DB\lib\DBCriteria;
+use DB\lib\DBJoinChain;
 use DB\lib\DBList;
 use DB\traits\LimitTrait;
 use DB\traits\OrderByTrait;
@@ -33,7 +34,7 @@ class DBDelete implements DBQueryBase {
         $this->where = new DBCriteria();
         $this->order = new DBList();
         $this->delete = new DBList();
-        $this->joined = false;
+        $this->joins = new DBJoinChain();
         $this->limit = '';
     }
 
