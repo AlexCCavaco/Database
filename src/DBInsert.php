@@ -15,6 +15,10 @@ class DBInsert implements DBQueryBase {
     protected $table;
 
     /**
+     * @var bool
+     */
+    protected $ignore;
+    /**
      * @var DBList
      */
     protected $cols;
@@ -36,6 +40,7 @@ class DBInsert implements DBQueryBase {
         if($alias!=='') $table.= ' AS '.$alias;
         $this->table = $table;
 
+        $this->ignore = false;
         $this->cols = new DBList();
         $this->values = new DBParamList();
         $this->duplicate = new DBFields();
@@ -48,6 +53,14 @@ class DBInsert implements DBQueryBase {
      */
     public static function into($table,$alias=''){
         return new static($table,$alias);
+    }
+
+    /**
+     * @return $this
+     */
+    public function ignore(){
+        $this->ignore = true;
+        return $this;
     }
 
     /**
@@ -86,7 +99,7 @@ class DBInsert implements DBQueryBase {
      * @return string
      */
     public function query(){
-        $q = 'INSERT INTO '.$this->table.' ('.$this->cols->query().') VALUES ('.$this->values->query().')';
+        $q = 'INSERT '.($this->ignore?'IGNORE ':'').'INTO '.$this->table.' ('.$this->cols->query().') VALUES ('.$this->values->query().')';
         if($this->duplicate->query()!=='') $q.= ' ON DUPLICATE KEY UPDATE '.$this->duplicate->query();
         return $q;
     }
