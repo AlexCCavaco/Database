@@ -46,7 +46,7 @@ class DBParamList extends DBAbstract {
     public function add(string $val='?',?string $param=null):self {
         if($this->query!=='') $this->query.= ',';
         $this->query.= $val;
-        if(!is_null($param)) $this->params[] = $param;
+        $this->params[] = $param;
         return $this;
     }
 
