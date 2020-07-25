@@ -23,7 +23,7 @@ class DBInsert implements DBQueryBase {
      */
     protected $cols;
     /**
-     * @var DBParamList
+     * @var DBParamList[]
      */
     protected $values;
     /**
@@ -42,7 +42,7 @@ class DBInsert implements DBQueryBase {
 
         $this->ignore = false;
         $this->cols = new DBList();
-        $this->values = new DBParamList();
+        $this->values = [new DBParamList()];
         $this->duplicate = new DBFields();
     }
 
@@ -71,9 +71,31 @@ class DBInsert implements DBQueryBase {
      */
     public function value($col,$param,$onDup=false){
         $this->cols->add($col);
-        $this->values->add('?',$param);
+        $this->values[0]->add('?',$param);
         if($onDup) $this->duplicate->set($col,'VALUES('.$col.')');
         return $this;
+    }
+
+    /**
+     * @param array $cols
+     * @param array $multiValues
+     * @return $this
+     */
+    public function multiValues(array $cols,array $multiValues,$onDup=false){
+        foreach($cols as $col){
+            if($onDup) $this->duplicate->set($col,'VALUES('.$col.')');
+            $this->cols->add($col);
+        }
+        foreach($multiValues as $mValues) $this->addMultiValue($mValues);
+        return $this;
+    }
+
+    /**
+     * @param $values
+     */
+    private function addMultiValue($values){
+        $plist = $this->values[0]->query()===''?$this->values[0]:($this->values[]=new DBParamList());
+        foreach($values as $value) $plist->add('?',$value);
     }
 
     /**
@@ -99,7 +121,9 @@ class DBInsert implements DBQueryBase {
      * @return string
      */
     public function query(){
-        $q = 'INSERT '.($this->ignore?'IGNORE ':'').'INTO '.$this->table.' ('.$this->cols->query().') VALUES ('.$this->values->query().')';
+        $q = 'INSERT '.($this->ignore?'IGNORE ':'').'INTO '.$this->table.' ('.$this->cols->query().') VALUES ';
+        if(count($this->values)>1) foreach($this->values as $k=>$val) $q.= ($k===0?'':',').'('.$val->query().')';
+        else $q.= '('.$this->values[0]->query().')';
         if($this->duplicate->query()!=='') $q.= ' ON DUPLICATE KEY UPDATE '.$this->duplicate->query();
         return $q;
     }
@@ -108,7 +132,10 @@ class DBInsert implements DBQueryBase {
      * @return array
      */
     public function params(){
-        return array_merge($this->values->params(),$this->duplicate->params());
+        $a = [];
+        if(count($this->values)>1) foreach($this->values as $k=>$value) $a = array_merge($a,$value->params());
+        else $a = $this->values[0]->params();
+        return array_merge($a,$this->duplicate->params());
     }
 
     use PrepRunTrait;
