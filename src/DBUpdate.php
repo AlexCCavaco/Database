@@ -6,6 +6,8 @@ use DB\lib\DBCriteria;
 use DB\lib\DBFields;
 use DB\lib\DBJoinChain;
 use DB\traits\JoinTrait;
+use DB\traits\LimitTrait;
+use DB\traits\OrderByTrait;
 use DB\traits\PrepRunTrait;
 use DB\traits\WhereTrait;
 
@@ -85,6 +87,10 @@ class DBUpdate implements DBQueryBase {
 
     use JoinTrait;
 
+    use OrderByTrait;
+
+    use LimitTrait;
+
     /**
      * @param string $returning
      * @return $this
@@ -101,6 +107,8 @@ class DBUpdate implements DBQueryBase {
         $q = 'UPDATE '.$this->table;
         if($this->joins->query()!=='') $q.= ' '.$this->joins->query();
         $q.= ' SET '.$this->set->query().' WHERE '.$this->where->query();
+        if($this->order->query()!=='') $q.= ' ORDER BY '.$this->order->query();
+        if($this->limit!=='') $q.= ' LIMIT '.$this->limit;
         if($this->returning!=='') $q.= ' RETURNING '.$this->returning;
         return $q;
     }
