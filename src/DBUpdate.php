@@ -5,6 +5,7 @@ namespace DB;
 use DB\lib\DBCriteria;
 use DB\lib\DBFields;
 use DB\lib\DBJoinChain;
+use DB\lib\DBList;
 use DB\traits\JoinTrait;
 use DB\traits\LimitTrait;
 use DB\traits\OrderByTrait;
@@ -39,6 +40,8 @@ class DBUpdate implements DBQueryBase {
         $this->set = new DBFields();
         $this->where = new DBCriteria();
         $this->joins = new DBJoinChain();
+        $this->order = new DBList();
+        $this->limit = '';
         $this->returning = '';
     }
 
